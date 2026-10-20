@@ -12,18 +12,23 @@
 
 /* Camada repositories */
 
+//========================================================================
+/*                           Camada repositories                        */
+//========================================================================
+
 class pratoRepository {
 
     private pratos:Prato[] = [];
 
     //adiciona o livro no banco de dados(array pratos)
-    salvar(prato:Prato):void{
+    cadastrar(prato:Prato):void{
         // adicionar no array
         this.pratos.push(
             {
                 nome: prato.nome,
                 dataValidade: prato.dataValidade,
                 nacionalidade: prato.nacionalidade,
+                numeroPedido: prato.numeroPedido
             }
         )
     };
@@ -52,7 +57,7 @@ class entregaRepository {
     };
 
     //obter todos os entregas que foram salvos
-    mostrarRelatorioPrato():void{
+    emitirRelatorioEntrega():void{
         console.log(this.entregas)
     }
 }
@@ -90,9 +95,12 @@ class contratadoRepository {
         // adicionar no array
         this.contratados.push(
             {
+                nome: contratado.nome,
+                sexo: contratado.sexo,
+                dataContratacao: contratado.dataContratacao,
+                cpf: contratado.cpf,
+                rg: contratado.rg,
                 salario: contratado.salario,
-                dataValidade: contratado.dataValidade,
-                nacionalidade: contratado.nacionalidade,
             }
         )
     };
@@ -116,9 +124,14 @@ class freelancerRepository {
         // adicionar no array
         this.freelancers.push(
             {
+                nome: freelancer.nome,
+                sexo: freelancer.sexo,
+                dataContratacao: freelancer.dataContratacao,
+                cpf: freelancer.cpf,
+                rg: freelancer.rg,
                 salarioHora: freelancer.salarioHora,
                 dataLimiteContrato: freelancer.dataLimiteContrato,
-                nacionalidade: freelancer.nacionalidade,
+                horasTrabalhadas: freelancer.horasTrabalhadas
             }
         )
     };
@@ -128,46 +141,47 @@ class freelancerRepository {
         console.log(this.freelancers)
     }
 
-    calcularSalarioHora(){
-
+    calcularSalarioHora(salarioHora:number, horasTrabalhadas: number): number{
+        return salarioHora * horasTrabalhadas
     }
     
-    calcularVencimentoContrato(){
-
+    mostrarSalario():void{
+        this.calcularSalarioHora
     }
 
-    mostrarTempoRestanteContrato(){
+    calcularVencimentoContrato(dataContratacao:number, dataLimiteContrato: number): number{
+        return dataContratacao - dataLimiteContrato
+    }
 
+    mostrarTempoRestanteContrato(tempoRestanteContrato:string): string{
+        return tempoRestanteContrato = '26 dias'
     }
 }
 
-
-
-
-
-
-//========================
-/*     Camada models    */
-//========================
+//========================================================================
+/*                               Camada models                          */
+//========================================================================
 class Prato{
     nome: string;
     dataValidade: string;
     nacionalidade: string;
+    numeroPedido: number;
 
-    constructor(nome: string, dataValidade: string, nacionalidade: string){
+    constructor(nome: string, dataValidade: string, nacionalidade: string, numeroPedido: number){
         this.nome = nome;
         this.dataValidade = dataValidade;
         this.nacionalidade = nacionalidade;
+        this.numeroPedido = numeroPedido;
     }
 }
 
 class Entrega{
     dataSaida: string;
-    horaSaida: string;
+    horaSaida: number;
     numeroPedido: number;
     endereco: string;
 
-    constructor(dataSaida: string, horaSaida: string, numeroPedido: number, endereco: string,){
+    constructor(dataSaida: string, horaSaida: number, numeroPedido: number, endereco: string,){
         this.dataSaida = dataSaida;
         this.horaSaida = horaSaida;
         this.numeroPedido = numeroPedido;
@@ -195,22 +209,178 @@ class Contratado extends Funcionario{
     salario: number;
     
     constructor(nome: string, sexo:string, dataContratacao: string, cpf: string, rg: string, salario: number){
-        //super(nome: string; sexo:string; dataContratacao: string; cpf: string; rg: string);
-
+        super(nome, sexo, dataContratacao, cpf, rg);
+        this.salario = salario
     }
 }
 
-class Freelancer{
-    
+class Freelancer extends Funcionario{
     salarioHora: number;
     dataLimiteContrato: string;
-
-    constructor(nome: string, sexo:string, dataContratacao: string, cpf: string, rg: string, salarioHora: number, dataLimiteContrato: string){
-        //super(nome: string; sexo:string; dataContratacao: string; cpf: string; rg: string);
-        this.nome = nome;
-        this.sexo = sexo;
-        this.dataContratacao = dataContratacao;
-        this.cpf = cpf;
-        this.rg = rg
+    horasTrabalhadas: number;
+    constructor(nome: string, sexo:string, dataContratacao: string, cpf: string, rg: string, salarioHora: number, dataLimiteContrato: string, horasTrabalhadas: number){
+        super(nome, sexo, dataContratacao, cpf, rg);
+        this.salarioHora = salarioHora;
+        this.dataLimiteContrato = dataLimiteContrato;
+        this.horasTrabalhadas = horasTrabalhadas
     }
 }
+
+/* ============== Teste ================ */
+
+const espaguete = new Prato(
+    'Espaquete',
+    '22/10/2026',
+    'Italiana'
+);
+
+const cookies = new Prato(
+    'Cookies com gotas de chocolate',
+    '30/10/2026',
+    'Estadunidense'
+);
+
+const boloFrances = new Prato(
+    'Fraisier',
+    '23/10/2026',
+    'Francesa'
+);
+
+const boloJapones = new Prato(
+    'Ichigo Shortcake',
+    '23/10/2026',
+    'Japonesa'
+);
+
+const banana = new Prato(
+    'Banana nanica',
+    '24/10/2026',
+    'Brasileira'
+);
+
+const Ramen = new Prato(
+    'Shoyu Ramen (醤油ラーメン)',
+    '24/10/2026',
+    'Japonesa'
+);
+
+const parmegiana = new Prato(
+    'Parmegiana de frango, carne ou tilápia',
+    '22/10/2026',
+    'Italiana'
+);
+
+const ensopadoPerpetuo = new Prato(
+    'pot-au-feu de perpignan',
+    '20/10/2526',
+    'Francesa'
+);
+
+const sopaDiv = new Prato(
+    'Sopa de D, I e Vs',
+    '22/10/2026',
+    'Inglesa'
+);
+
+const pizzaAranha = new Prato(
+    'Pizza do Homem Aranha',
+    '23/10/2026',
+    'Estados Unidos'
+);
+
+// objeto que representa a tabela livros
+const tabelapratos = new pratoRepository()
+
+
+//salva e consulta todos os livros cadastrados
+tabelapratos.cadastrar(espaguete)
+tabelapratos.mostrarRelatorioPrato()
+
+tabelapratos.cadastrar(cookies)
+tabelapratos.mostrarRelatorioPrato()
+
+tabelapratos.cadastrar(boloFrances)
+tabelapratos.mostrarRelatorioPrato()
+
+tabelapratos.cadastrar(boloJapones)
+tabelapratos.mostrarRelatorioPrato()
+
+tabelapratos.cadastrar(banana)
+tabelapratos.mostrarRelatorioPrato()
+
+tabelapratos.cadastrar(Ramen)
+tabelapratos.mostrarRelatorioPrato()
+
+tabelapratos.cadastrar(parmegiana)
+tabelapratos.mostrarRelatorioPrato()
+
+tabelapratos.cadastrar(ensopadoPerpetuo)
+tabelapratos.mostrarRelatorioPrato()
+
+tabelapratos.cadastrar(sopaDiv)
+tabelapratos.mostrarRelatorioPrato()
+
+tabelapratos.cadastrar(pizzaAranha)
+tabelapratos.mostrarRelatorioPrato()
+//=========================================================================
+
+const entregaAranha = new Entrega(
+    '20/10/2026',
+    22,
+    10,
+    'nova iorque, maranhão'
+)
+
+const tabelaEntrega = new entregaRepository()
+tabelaEntrega.salvar(entregaAranha)
+tabelaEntrega.emitirRelatorioEntrega()
+
+//=========================================================================
+
+const Claudinei = new Freelancer(
+    'Claudinei Vincius De Almeida',
+    'Macho',
+    '20/10/2026',
+    '22.222.222-2',
+    '222.222.222-22',
+    30,
+    '25/10/2026',
+    180,
+);
+
+
+const tabelaFreelancers = new freelancerRepository()
+tabelaFreelancers.salvar(Claudinei)
+tabelaFreelancers.calcularSalarioHora(Claudinei.salarioHora,Claudinei.horasTrabalhadas)
+//tabelaFreelancers.calcularVencimentoContrato(Claudinei.dataContratacao, Claudinei.dataLimiteContrato)
+//tabelaFreelancers.mostrarRelatorio(Claudinei)
+tabelaFreelancers.mostrarSalario()
+//tabelaFreelancers.mostrarTempoRestanteContrato(Claudinei)
+
+//============================================================================
+
+const Boolean = new Contratado(
+    'Bianca "Boolean" de Orleans',
+    'Femea',
+    '20/04/1987',
+    '010.101.110-11',
+    '11.011.101-01',
+    2000
+)
+
+const homemAranha = new Contratado(
+    'Pedro Parker dos Santos Silva',
+    'Homem',
+    '20/04/1930',
+    '444.444.444-44',
+    '12.400.836-32',
+    1000
+)
+
+const tabelaContratados = new contratadoRepository()
+
+tabelaContratados.salvar(Boolean)
+tabelaContratados.mostrarRelatorio()
+
+tabelaContratados.salvar(homemAranha)
+tabelaContratados.mostrarRelatorio()
