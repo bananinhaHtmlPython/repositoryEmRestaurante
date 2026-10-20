@@ -207,6 +207,10 @@ class Freelancer{
 
     constructor(nome: string, sexo:string, dataContratacao: string, cpf: string, rg: string, salarioHora: number, dataLimiteContrato: string){
         //super(nome: string; sexo:string; dataContratacao: string; cpf: string; rg: string);
-
+        this.nome = nome;
+        this.sexo = sexo;
+        this.dataContratacao = dataContratacao;
+        this.cpf = cpf;
+        this.rg = rg
     }
 }
